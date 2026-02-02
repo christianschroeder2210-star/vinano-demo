@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vinano Demo – KI-Telefonassistent</title>
+  <meta name="description" content="Öffentliche Demo: Testen Sie den Vinano KI-Telefonassistenten – realistische Handwerker-Anruf-Simulation." />
+
+  <style>
+    :root{
+      --bg:#07080A;--bg2:#0B0D10;--text:#E8E8E8;--muted:#A9ABB1;
+      --line:rgba(255,255,255,.10);--shadow:rgba(0,0,0,.55);
+      --accent:#C7CED8;--accent2:#7E8796;--btn:#0E1014;--btn2:#141821;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(199,206,216,.12), transparent 60%),
+        radial-gradient(900px 500px at 80% 30%, rgba(126,135,150,.10), transparent 55%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+    }
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 16px 80px}
+    .card{
+      width:min(980px,100%);border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03));
+      border-radius:20px;box-shadow:0 18px 60px var(--shadow);padding:28px
+    }
+    .pill{display:inline-flex;gap:8px;padding:6px 10px;border-radius:999px;
+      border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--muted);font-size:13px}
+    .dot{width:8px;height:8px;border-radius:999px;background:rgba(199,206,216,.9)}
+    h1{margin:12px 0 8px;font-size:clamp(22px,3vw,34px)}
+    p{margin:0;color:var(--muted);line-height:1.45}
+    .grid{margin-top:18px;display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .panel{border:1px solid var(--line);background:rgba(0,0,0,.25);border-radius:16px;padding:18px}
+    .panel h2{margin:0 0 8px;font-size:16px;color:var(--accent)}
+    ul{margin:10px 0 0;padding-left:18px;color:var(--muted);line-height:1.55}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;
+      border-radius:14px;border:1px solid rgba(255,255,255,.14);
+      color:var(--text);background:linear-gradient(180deg,var(--btn2),var(--btn));
+      text-decoration:none;font-weight:600;cursor:pointer;
+      transition:transform .12s,box-shadow .12s,border-color .12s
+    }
+    .btn:hover{transform:translateY(-1px);border-color:rgba(199,206,216,.35)}
+    .btnSecondary{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+    .status{display:none;margin-top:10px;padding:10px;border-radius:12px;
+      border:1px dashed rgba(199,206,216,.25);font-size:13px}
+    .afterCall{display:none;margin-top:14px;gap:10px;flex-wrap:wrap}
+    @media(max-width:880px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+
+<body>
+<main class="wrap">
+<section class="card">
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <div class="pill"><span class="dot"></span> Öffentliche Demo</div>
+    <div class="pill">KI-Telefonassistent</div>
+    <div class="pill">Vinano · Heidelberg</div>
+  </div>
+
+  <h1>Testen Sie unseren KI-Telefonassistenten</h1>
+  <p>
+    Stellen Sie Ihre Frage so, als würden Sie gerade bei einem Handwerksbetrieb anrufen
+    (z. B. Elektriker, Sanitär, Dachdecker).  
+    Diese Demo zeigt, wie Anrufannahme, Qualifizierung und Terminlogik automatisiert ablaufen können.
+  </p>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>So funktioniert die Demo</h2>
+      <ul>
+        <li>Starten Sie die Demo über den Button unten rechts.</li>
+        <li>Erlauben Sie den Mikrofonzugriff.</li>
+        <li>Sprechen Sie Ihr Anliegen ganz normal ein.</li>
+        <li>Beenden Sie das Gespräch jederzeit über „Beenden“.</li>
+      </ul>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <a class="btn btnSecondary" href="https://www.vinano.de" target="_blank">www.vinano.de</a>
+        <a class="btn btnSecondary" href="mailto:info@vinano.de">info@vinano.de</a>
+        <a class="btn btnSecondary" href="tel:+4915679706297">+49 15679 706297</a>
+      </div>
+
+      <div id="status" class="status"></div>
+
+      <div id="afterCall" class="afterCall">
+        <a class="btn" href="https://wa.me/4915679706297" target="_blank">WhatsApp-Kontakt</a>
+        <a class="btn" href="https://www.vinano.de" target="_blank">Termin auf vinano.de buchen</a>
+      </div>
+
+      <p style="margin-top:10px;font-size:13px;color:#bbb">
+        Hinweis: Dies ist eine Demo. Es werden keine echten Termine oder Aufträge angenommen.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h2>Beispiel-Anfragen</h2>
+      <ul>
+        <li>„Ich habe einen Kurzschluss – wäre heute ein Termin möglich?“</li>
+        <li>„Meine Heizung funktioniert nicht – wie schnell könnten Sie kommen?“</li>
+        <li>„Was kostet eine Reparatur ungefähr?“</li>
+        <li>„Arbeiten Sie in meiner Postleitzahl?“</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async></script>
+
+<vapi-widget
+  public-key="c49395c7-5cc5-4e33-94be-a3c185e29b01"
+  assistant-id="1aae9347-3f9d-4054-a234-66428bf640d9"
+  mode="voice"
+  theme="dark"
+  position="bottom-right"
+  size="compact"
+  radius="large"
+  base-color="#0B0D10"
+  accent-color="#C7CED8"
+  button-base-color="#0E1014"
+  button-accent-color="#E8E8E8"
+  main-label="Vinano Demo"
+  start-button-text="Start"
+  end-button-text="Beenden"
+  empty-voice-message="Klicken Sie auf „Start“, um die Demo zu beginnen."
+  require-consent="true"
+  terms-content="Dies ist eine öffentliche Demo von Vinano. Keine echte Terminbuchung. Mit Start stimmen Sie zu."
+></vapi-widget>
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const s=document.getElementById('status');
+  const a=document.getElementById('afterCall');
+  const w=document.querySelector('vapi-widget');
+  if(!w) return;
+
+  w.addEventListener('call-start',()=>{
+    a.style.display='none';
+    s.style.display='block';
+    s.textContent='Die Demo läuft. Sie können das Gespräch jederzeit beenden.';
+  });
+
+  w.addEventListener('call-end',()=>{
+    s.textContent='Die Demo wurde beendet. Gerne können Sie jetzt Kontakt aufnehmen oder einen Termin buchen.';
+    a.style.display='flex';
+  });
+
+  w.addEventListener('error',e=>{
+    s.style.display='block';
+    s.textContent='Technischer Hinweis: Bitte prüfen Sie Mikrofonzugriff oder Internetverbindung.';
+  });
+});
+</script>
+</body>
+</html>v
