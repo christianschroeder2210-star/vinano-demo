@@ -4,156 +4,615 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Vinano Demo – KI-Telefonassistent</title>
-  <meta name="description" content="Öffentliche Demo: Testen Sie den Vinano KI-Telefonassistenten – realistische Handwerker-Anruf-Simulation." />
+  <meta name="description" content="Öffentliche Demo: Testen Sie den Vinano KI-Telefonassistenten – realistische Handwerker-Anruf-Simulation (Inbound & Outbound)." />
 
   <style>
     :root{
-      --bg:#07080A;--bg2:#0B0D10;--text:#E8E8E8;--muted:#A9ABB1;
-      --line:rgba(255,255,255,.10);--shadow:rgba(0,0,0,.55);
-      --accent:#C7CED8;--accent2:#7E8796;--btn:#0E1014;--btn2:#141821;
+      --bg:#05060A;
+      --bg2:#0A0C12;
+      --text:#EDEDF0;
+      --muted:#A9ABB1;
+      --line:rgba(255,255,255,.10);
+      --shadow:rgba(0,0,0,.55);
+
+      /* Neon / Chrome */
+      --neon1:#8B5CF6; /* violet */
+      --neon2:#22D3EE; /* cyan */
+      --neon3:#A3FF12; /* lime */
+      --chromeA:#F7FAFF;
+      --chromeB:#D8DEE9;
+      --chromeC:#7C8596;
+
+      --btn:#0E1014;
+      --btn2:#141821;
+
+      --glass: rgba(255,255,255,.05);
+      --glass2: rgba(0,0,0,.28);
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
+
     body{
       margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 600px at 20% 10%, rgba(199,206,216,.12), transparent 60%),
-        radial-gradient(900px 500px at 80% 30%, rgba(126,135,150,.10), transparent 55%),
+        radial-gradient(1200px 600px at 20% 10%, rgba(139,92,246,.18), transparent 60%),
+        radial-gradient(900px 500px at 80% 30%, rgba(34,211,238,.14), transparent 55%),
+        radial-gradient(900px 520px at 50% 95%, rgba(163,255,18,.10), transparent 60%),
         linear-gradient(180deg,var(--bg),var(--bg2));
+      overflow-x:hidden;
     }
-    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 16px 80px}
+
+    /* Animated neon aurora layer */
+    body::before{
+      content:"";
+      position:fixed; inset:-70px;
+      background:
+        radial-gradient(520px 320px at 12% 18%, rgba(139,92,246,.22), transparent 62%),
+        radial-gradient(620px 360px at 86% 22%, rgba(34,211,238,.20), transparent 64%),
+        radial-gradient(560px 360px at 52% 88%, rgba(163,255,18,.14), transparent 66%),
+        conic-gradient(from 180deg at 50% 50%,
+          rgba(139,92,246,.08),
+          rgba(34,211,238,.08),
+          rgba(163,255,18,.06),
+          rgba(139,92,246,.08));
+      filter: blur(18px) saturate(1.15);
+      opacity:.85;
+      animation: aurora 12s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:0;
+    }
+    @keyframes aurora{
+      from{transform:translate3d(0,0,0) scale(1)}
+      to{transform:translate3d(0,-16px,0) scale(1.03)}
+    }
+
+    /* Subtle star noise */
+    body::after{
+      content:"";
+      position:fixed; inset:0;
+      background-image:
+        radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 38px 38px;
+      opacity:.18;
+      pointer-events:none;
+      z-index:0;
+      mix-blend-mode: screen;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px 16px 120px;
+      perspective: 1200px; /* 3D tilt */
+    }
+
     .card{
-      width:min(980px,100%);border:1px solid var(--line);
-      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03));
-      border-radius:20px;box-shadow:0 18px 60px var(--shadow);padding:28px
+      width:min(1040px,100%);
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.22));
+      border-radius:24px;
+      box-shadow:
+        0 18px 70px rgba(0,0,0,.65),
+        0 0 0 1px rgba(255,255,255,.06) inset;
+      padding:28px;
+      backdrop-filter: blur(10px);
+      transform: translateY(0);
+      animation: cardIn .55s ease-out both;
+      position:relative;
+      overflow:hidden;
     }
-    .pill{display:inline-flex;gap:8px;padding:6px 10px;border-radius:999px;
-      border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--muted);font-size:13px}
-    .dot{width:8px;height:8px;border-radius:999px;background:rgba(199,206,216,.9)}
-    h1{margin:12px 0 8px;font-size:clamp(22px,3vw,34px)}
-    p{margin:0;color:var(--muted);line-height:1.45}
-    .grid{margin-top:18px;display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
-    .panel{border:1px solid var(--line);background:rgba(0,0,0,.25);border-radius:16px;padding:18px}
-    .panel h2{margin:0 0 8px;font-size:16px;color:var(--accent)}
-    ul{margin:10px 0 0;padding-left:18px;color:var(--muted);line-height:1.55}
+
+    /* Neon border glow */
+    .card::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background:
+        radial-gradient(900px 220px at 20% 0%, rgba(139,92,246,.20), transparent 60%),
+        radial-gradient(900px 220px at 80% 0%, rgba(34,211,238,.18), transparent 60%),
+        radial-gradient(900px 220px at 50% 120%, rgba(163,255,18,.14), transparent 60%);
+      opacity:.85;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+
+    /* Animated highlight sweep */
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-120px;
+      background: linear-gradient(120deg,
+        transparent 35%,
+        rgba(255,255,255,.06) 45%,
+        rgba(255,255,255,.10) 50%,
+        rgba(255,255,255,.06) 55%,
+        transparent 65%);
+      transform: translateX(-40%);
+      animation: sweep 6.5s ease-in-out infinite;
+      pointer-events:none;
+      opacity:.7;
+      mix-blend-mode: overlay;
+    }
+    @keyframes sweep{
+      0%{transform:translateX(-55%) rotate(0.001deg)}
+      50%{transform:translateX(25%) rotate(0.001deg)}
+      100%{transform:translateX(-55%) rotate(0.001deg)}
+    }
+
+    @keyframes cardIn{
+      from{opacity:0; transform: translateY(12px) rotateX(2deg)}
+      to{opacity:1; transform: translateY(0) rotateX(0deg)}
+    }
+
+    .pillRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;position:relative;z-index:1}
+
+    .pill{
+      display:inline-flex;gap:8px;padding:7px 11px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.20);
+      color: rgba(230,233,240,.78);
+      font-size:13px;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      will-change: transform;
+      position:relative;
+      overflow:hidden;
+    }
+    .pill::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: radial-gradient(circle at 30% 30%, rgba(34,211,238,.18), transparent 55%);
+      opacity:0;
+      transition: opacity .15s ease;
+    }
+    .pill:hover{
+      transform: translateY(-1px);
+      border-color: rgba(34,211,238,.28);
+      background: rgba(0,0,0,.28);
+    }
+    .pill:hover::after{opacity:1}
+
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: linear-gradient(90deg, var(--neon1), var(--neon2));
+      box-shadow:0 0 0 0 rgba(34,211,238,.35);
+      animation:pulseDot 1.8s ease-out infinite;
+    }
+    @keyframes pulseDot{
+      0%{box-shadow:0 0 0 0 rgba(34,211,238,.32)}
+      70%{box-shadow:0 0 0 12px rgba(34,211,238,0)}
+      100%{box-shadow:0 0 0 0 rgba(34,211,238,0)}
+    }
+
+    /* Chrome / neon headline */
+    h1{
+      margin:14px 0 8px;
+      font-size:clamp(22px,3vw,38px);
+      line-height:1.05;
+      letter-spacing:-.03em;
+      position:relative;
+      z-index:1;
+    }
+
+    .headline{
+      background:
+        linear-gradient(90deg,
+          var(--chromeA) 0%,
+          rgba(255,255,255,.92) 14%,
+          var(--chromeB) 30%,
+          rgba(34,211,238,.92) 45%,
+          var(--chromeA) 60%,
+          rgba(139,92,246,.92) 72%,
+          var(--chromeA) 100%);
+      background-size: 240% 100%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      text-shadow:
+        0 0 18px rgba(34,211,238,.18),
+        0 0 26px rgba(139,92,246,.14);
+      animation: chromeShift 5.6s ease-in-out infinite;
+    }
+    @keyframes chromeShift{
+      0%{background-position: 0% 50%}
+      50%{background-position: 100% 50%}
+      100%{background-position: 0% 50%}
+    }
+
+    p{
+      margin:0;
+      color: rgba(220,223,230,.80);
+      line-height:1.6;
+      position:relative;
+      z-index:1;
+    }
+    p b{
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 0 14px rgba(34,211,238,.16);
+    }
+
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:1.12fr .88fr;
+      gap:18px;
+      position:relative;
+      z-index:1;
+    }
+
+    .panel{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      border-radius:20px;
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+      transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+
+    .panel::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background:
+        radial-gradient(560px 200px at 15% 10%, rgba(34,211,238,.16), transparent 55%),
+        radial-gradient(560px 220px at 85% 0%, rgba(139,92,246,.14), transparent 60%),
+        radial-gradient(560px 220px at 50% 110%, rgba(163,255,18,.10), transparent 60%);
+      opacity:.9;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+
+    .panel:hover{
+      transform: translateY(-3px) rotateX(1deg) rotateY(-1deg);
+      border-color: rgba(34,211,238,.22);
+      box-shadow: 0 16px 52px rgba(0,0,0,.45);
+      background: rgba(0,0,0,.28);
+    }
+
+    .panel h2{
+      margin:0 0 8px;
+      font-size:16px;
+      color: rgba(240,245,255,.88);
+      text-shadow: 0 0 18px rgba(34,211,238,.10);
+      position:relative;
+      z-index:1;
+    }
+
+    ul{
+      margin:10px 0 0;
+      padding-left:18px;
+      color: rgba(210,213,220,.80);
+      line-height:1.7;
+      position:relative;
+      z-index:1;
+    }
+
+    .btnRow{
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;
+      position:relative;z-index:1;
+    }
+
     .btn{
-      display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;
-      border-radius:14px;border:1px solid rgba(255,255,255,.14);
-      color:var(--text);background:linear-gradient(180deg,var(--btn2),var(--btn));
-      text-decoration:none;font-weight:600;cursor:pointer;
-      transition:transform .12s,box-shadow .12s,border-color .12s
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.92);
+      background:
+        linear-gradient(180deg, rgba(20,24,33,.92), rgba(10,12,18,.92));
+      text-decoration:none;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .12s, box-shadow .12s, border-color .12s, filter .12s;
+      position:relative;
+      overflow:hidden;
+      will-change: transform;
     }
-    .btn:hover{transform:translateY(-1px);border-color:rgba(199,206,216,.35)}
-    .btnSecondary{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
-    .status{display:none;margin-top:10px;padding:10px;border-radius:12px;
-      border:1px dashed rgba(199,206,216,.25);font-size:13px}
-    .afterCall{display:none;margin-top:14px;gap:10px;flex-wrap:wrap}
-    @media(max-width:880px){.grid{grid-template-columns:1fr}}
+
+    /* Neon edge */
+    .btn::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: linear-gradient(90deg, rgba(139,92,246,.55), rgba(34,211,238,.55), rgba(163,255,18,.30));
+      opacity:.0;
+      transition: opacity .14s ease;
+      pointer-events:none;
+      filter: blur(10px);
+    }
+
+    /* Shine */
+    .btn::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: radial-gradient(circle at 30% 30%, rgba(34,211,238,.18), transparent 55%);
+      transform: translateX(-25%) translateY(10%);
+      opacity:.0;
+      transition: opacity .15s ease;
+      pointer-events:none;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(34,211,238,.35);
+      filter: brightness(1.04);
+      box-shadow:
+        0 16px 44px rgba(0,0,0,.55),
+        0 0 30px rgba(34,211,238,.10);
+    }
+    .btn:hover::after{opacity:.9}
+    .btn:hover::before{opacity:.9}
+
+    .btnSecondary{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.12);
+      font-weight:750;
+    }
+
+    .status{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px dashed rgba(34,211,238,.22);
+      font-size:13px;
+      color: rgba(235,238,245,.92);
+      background: rgba(0,0,0,.16);
+      position:relative;
+      z-index:1;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset;
+    }
+
+    .afterCall{display:none;margin-top:14px;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+
+    .hint{
+      margin-top:14px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(34,211,238,.18);
+      background:
+        linear-gradient(180deg, rgba(34,211,238,.06), rgba(0,0,0,.18));
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      position:relative;
+      overflow:hidden;
+      z-index:1;
+    }
+    .hint::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(500px 130px at 25% 20%, rgba(34,211,238,.16), transparent 60%);
+      opacity:.85;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+
+    .hintBadge{
+      flex:0 0 auto;
+      width:30px;height:30px;border-radius:999px;
+      display:grid;place-items:center;
+      background: rgba(34,211,238,.12);
+      border: 1px solid rgba(34,211,238,.26);
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 0 12px rgba(34,211,238,.18);
+      box-shadow: 0 0 0 0 rgba(34,211,238,.28);
+      animation: pulseBadge 1.9s ease-out infinite;
+    }
+    @keyframes pulseBadge{
+      0%{box-shadow:0 0 0 0 rgba(34,211,238,.24)}
+      70%{box-shadow:0 0 0 14px rgba(34,211,238,0)}
+      100%{box-shadow:0 0 0 0 rgba(34,211,238,0)}
+    }
+    .hintText{position:relative;z-index:1}
+    .hintText b{color: rgba(255,255,255,.94)}
+    .hintText small{display:block;margin-top:4px;color: rgba(210,213,220,.90);line-height:1.45}
+
+    /* Fixed CTA pointer to widget */
+    .cornerArrow{
+      position:fixed;
+      right:18px;
+      bottom:96px;
+      width:240px;
+      max-width:66vw;
+      padding:11px 12px;
+      border-radius:16px;
+      border:1px solid rgba(34,211,238,.18);
+      background: rgba(0,0,0,.30);
+      backdrop-filter: blur(10px);
+      color: rgba(255,255,255,.92);
+      box-shadow:
+        0 18px 60px rgba(0,0,0,.55),
+        0 0 28px rgba(34,211,238,.10);
+      z-index:2;
+      transform: translateY(0);
+      animation: floatArrow 2.6s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .cornerArrow::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: linear-gradient(90deg, rgba(139,92,246,.22), rgba(34,211,238,.22), rgba(163,255,18,.14));
+      opacity:.35;
+      filter: blur(12px);
+      pointer-events:none;
+    }
+    .cornerArrow::after{
+      content:"";
+      position:absolute;
+      right:22px;
+      bottom:-10px;
+      width:18px;height:18px;
+      background: rgba(0,0,0,.30);
+      border-right:1px solid rgba(34,211,238,.18);
+      border-bottom:1px solid rgba(34,211,238,.18);
+      transform: rotate(45deg);
+      backdrop-filter: blur(10px);
+    }
+    @keyframes floatArrow{
+      0%{transform: translateY(0)}
+      50%{transform: translateY(-7px)}
+      100%{transform: translateY(0)}
+    }
+    .cornerArrow strong{display:block;font-size:13px;letter-spacing:.01em}
+    .cornerArrow span{display:block;font-size:12px;color: rgba(210,213,220,.88);margin-top:4px;line-height:1.35}
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      body::before, body::after, .dot, .headline, .card::after, .hintBadge, .cornerArrow {animation:none !important;transition:none !important}
+      .panel, .btn, .pill {transition:none !important}
+    }
+
+    @media(max-width:880px){
+      .grid{grid-template-columns:1fr}
+      .cornerArrow{display:none}
+      .wrap{padding-bottom:150px}
+    }
   </style>
 </head>
 
 <body>
-<main class="wrap">
-<section class="card">
-  <div style="display:flex;gap:10px;flex-wrap:wrap">
-    <div class="pill"><span class="dot"></span> Öffentliche Demo</div>
-    <div class="pill">KI-Telefonassistent</div>
-    <div class="pill">Vinano · Heidelberg</div>
+  <div class="cornerArrow" aria-hidden="true">
+    <strong>Jetzt starten</strong>
+    <span>Klicken Sie unten rechts auf „Vinano Demo“ und dann auf „Start“.</span>
   </div>
 
-  <h1>Testen Sie unseren KI-Telefonassistenten</h1>
-  <p>
-    Stellen Sie Ihre Frage so, als würden Sie gerade bei einem Handwerksbetrieb anrufen
-    (z. B. Elektriker, Sanitär, Dachdecker).  
-    Diese Demo zeigt, wie Anrufannahme, Qualifizierung und Terminlogik automatisiert ablaufen können.
-  </p>
-
-  <div class="grid">
-    <div class="panel">
-      <h2>So funktioniert die Demo</h2>
-      <ul>
-        <li>Starten Sie die Demo über den Button unten rechts.</li>
-        <li>Erlauben Sie den Mikrofonzugriff.</li>
-        <li>Sprechen Sie Ihr Anliegen ganz normal ein.</li>
-        <li>Beenden Sie das Gespräch jederzeit über „Beenden“.</li>
-      </ul>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-        <a class="btn btnSecondary" href="https://www.vinano.de" target="_blank">www.vinano.de</a>
-        <a class="btn btnSecondary" href="mailto:info@vinano.de">info@vinano.de</a>
-        <a class="btn btnSecondary" href="tel:+4915679706297">+49 15679 706297</a>
+  <main class="wrap">
+    <section class="card">
+      <div class="pillRow">
+        <div class="pill"><span class="dot"></span> Öffentliche Demo</div>
+        <div class="pill">KI-Telefonassistent</div>
+        <div class="pill">Inbound & Outbound</div>
+        <div class="pill">Vinano · Heidelberg</div>
       </div>
 
-      <div id="status" class="status"></div>
-
-      <div id="afterCall" class="afterCall">
-        <a class="btn" href="https://wa.me/4915679706297" target="_blank">WhatsApp-Kontakt</a>
-        <a class="btn" href="https://www.vinano.de" target="_blank">Termin auf vinano.de buchen</a>
-      </div>
-
-      <p style="margin-top:10px;font-size:13px;color:#bbb">
-        Hinweis: Dies ist eine Demo. Es werden keine echten Termine oder Aufträge angenommen.
+      <h1 class="headline">Testen Sie unseren KI-Telefonassistenten</h1>
+      <p>
+        Stellen Sie Ihre Frage so, als würden Sie gerade bei einem Handwerksbetrieb anrufen
+        (z. B. Elektriker, Sanitär, Dachdecker).
+        Diese Demo zeigt, wie Anrufannahme, Qualifizierung und Terminlogik automatisiert ablaufen können –
+        und wie man auf Wunsch auch <b>alte Leads automatisch wieder kontaktiert</b> (Outbound).
       </p>
-    </div>
 
-    <div class="panel">
-      <h2>Beispiel-Anfragen</h2>
-      <ul>
-        <li>„Ich habe einen Kurzschluss – wäre heute ein Termin möglich?“</li>
-        <li>„Meine Heizung funktioniert nicht – wie schnell könnten Sie kommen?“</li>
-        <li>„Was kostet eine Reparatur ungefähr?“</li>
-        <li>„Arbeiten Sie in meiner Postleitzahl?“</li>
-      </ul>
-    </div>
-  </div>
-</section>
-</main>
+      <div class="grid">
+        <div class="panel">
+          <h2>So funktioniert die Demo</h2>
+          <ul>
+            <li>Starten Sie die Demo über den Button unten rechts („Vinano Demo“).</li>
+            <li>Erlauben Sie den Mikrofonzugriff.</li>
+            <li>Sprechen Sie Ihr Anliegen ganz normal ein.</li>
+            <li>Beenden Sie das Gespräch jederzeit über „Beenden“.</li>
+          </ul>
 
-<script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async></script>
+          <div class="hint">
+            <div class="hintBadge">▶</div>
+            <div class="hintText">
+              <b>Interaktion-Tipp:</b> Testen Sie auch Outbound.
+              <small>Zum Beispiel: „Rufen Sie mich als alten Interessenten an und fragen nach, ob mein Anliegen noch aktuell ist.“</small>
+            </div>
+          </div>
 
-<vapi-widget
-  public-key="c49395c7-5cc5-4e33-94be-a3c185e29b01"
-  assistant-id="1aae9347-3f9d-4054-a234-66428bf640d9"
-  mode="voice"
-  theme="dark"
-  position="bottom-right"
-  size="compact"
-  radius="large"
-  base-color="#0B0D10"
-  accent-color="#C7CED8"
-  button-base-color="#0E1014"
-  button-accent-color="#E8E8E8"
-  main-label="Vinano Demo"
-  start-button-text="Start"
-  end-button-text="Beenden"
-  empty-voice-message="Klicken Sie auf „Start“, um die Demo zu beginnen."
-  require-consent="true"
-  terms-content="Dies ist eine öffentliche Demo von Vinano. Keine echte Terminbuchung. Mit Start stimmen Sie zu."
-></vapi-widget>
+          <div class="btnRow">
+            <a class="btn btnSecondary" href="https://www.vinano.de" target="_blank" rel="noopener">www.vinano.de</a>
+            <a class="btn btnSecondary" href="mailto:info@vinano.de">info@vinano.de</a>
+            <a class="btn btnSecondary" href="tel:+4915679706297">+49 15679 706297</a>
+          </div>
 
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  const s=document.getElementById('status');
-  const a=document.getElementById('afterCall');
-  const w=document.querySelector('vapi-widget');
-  if(!w) return;
+          <div id="status" class="status"></div>
 
-  w.addEventListener('call-start',()=>{
-    a.style.display='none';
-    s.style.display='block';
-    s.textContent='Die Demo läuft. Sie können das Gespräch jederzeit beenden.';
-  });
+          <div id="afterCall" class="afterCall">
+            <a class="btn" href="https://wa.me/4915679706297" target="_blank" rel="noopener">WhatsApp-Kontakt</a>
+            <a class="btn" href="https://www.vinano.de" target="_blank" rel="noopener">Termin auf vinano.de buchen</a>
+          </div>
 
-  w.addEventListener('call-end',()=>{
-    s.textContent='Die Demo wurde beendet. Gerne können Sie jetzt Kontakt aufnehmen oder einen Termin buchen.';
-    a.style.display='flex';
-  });
+          <p style="margin-top:10px;font-size:13px;color:rgba(210,213,220,.78);position:relative;z-index:1">
+            Hinweis: Dies ist eine Demo. Es werden keine echten Termine oder Aufträge angenommen.
+          </p>
+        </div>
 
-  w.addEventListener('error',e=>{
-    s.style.display='block';
-    s.textContent='Technischer Hinweis: Bitte prüfen Sie Mikrofonzugriff oder Internetverbindung.';
-  });
-});
-</script>
+        <div class="panel">
+          <h2>Beispiel-Anfragen (Inbound)</h2>
+          <ul>
+            <li>„Ich habe einen Kurzschluss – wäre heute ein Termin möglich?“</li>
+            <li>„Meine Heizung funktioniert nicht – wie schnell könnten Sie kommen?“</li>
+            <li>„Was kostet eine Reparatur ungefähr?“</li>
+            <li>„Arbeiten Sie in meiner Postleitzahl?“</li>
+          </ul>
+
+          <h2 style="margin-top:16px">Beispiel-Anfragen (Outbound)</h2>
+          <ul>
+            <li>„Rufen Sie mich als alten Lead an, der vor zwei Wochen angefragt hat.“</li>
+            <li>„Fassen Sie bei einem offenen Angebot nach und bieten Sie einen Termin an.“</li>
+            <li>„Rufen Sie wegen einer Wartungserinnerung an.“</li>
+            <li>„Versuchen Sie, einen abgebrochenen Kontakt wieder zu aktivieren.“</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- VAPI Widget -->
+  <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async></script>
+
+  <vapi-widget
+    public-key="c49395c7-5cc5-4e33-94be-a3c185e29b01"
+    assistant-id="1aae9347-3f9d-4054-a234-66428bf640d9"
+    mode="voice"
+    theme="dark"
+    position="bottom-right"
+    size="compact"
+    radius="large"
+    base-color="#07080A"
+    accent-color="#22D3EE"
+    button-base-color="#0E1014"
+    button-accent-color="#E8E8E8"
+    main-label="Vinano Demo"
+    start-button-text="Start"
+    end-button-text="Beenden"
+    empty-voice-message="Klicken Sie auf „Start“, um die Demo zu beginnen."
+    require-consent="true"
+    terms-content="Dies ist eine öffentliche Demo von Vinano. Keine echte Terminbuchung. Mit Start stimmen Sie zu."
+  ></vapi-widget>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const s=document.getElementById('status');
+      const a=document.getElementById('afterCall');
+      const w=document.querySelector('vapi-widget');
+      const arrow=document.querySelector('.cornerArrow');
+
+      if(!w) return;
+
+      const showStatus = (msg) => {
+        s.style.display='block';
+        s.textContent=msg;
+      };
+
+      w.addEventListener('call-start',()=>{
+        a.style.display='none';
+        showStatus('Die Demo läuft. Tipp: Testen Sie auch Outbound, z. B. „Rufen Sie mich als alten Interessenten an.“');
+        if (arrow) arrow.style.display='none';
+      });
+
+      w.addEventListener('call-end',()=>{
+        showStatus('Die Demo wurde beendet. Gerne können Sie jetzt Kontakt aufnehmen oder direkt einen Termin auf vinano.de buchen.');
+        a.style.display='flex';
+        if (arrow) arrow.style.display='';
+      });
+
+      w.addEventListener('error',()=>{
+        showStatus('Technischer Hinweis: Bitte prüfen Sie Mikrofonzugriff oder Internetverbindung.');
+      });
+
+      // Optional: Hide the arrow after a while (less visual noise)
+      setTimeout(()=>{ if (arrow) arrow.style.opacity = '0.0'; }, 16000);
+      setTimeout(()=>{ if (arrow) arrow.style.display = 'none'; }, 17500);
+    });
+  </script>
 </body>
-</html>v
+</html>
