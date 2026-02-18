@@ -473,6 +473,172 @@
       .cornerArrow{display:none}
       .wrap{padding-bottom:150px}
     }
+
+    /* ========================= */
+    /* ADD-ON: Footer + Modal + Cookie Banner (DSGVO) */
+    /* ========================= */
+
+    .siteFooter{
+      position:relative;
+      z-index:2;
+      width:100%;
+      padding:18px 16px 26px;
+      display:flex;
+      justify-content:center;
+    }
+    .siteFooterInner{
+      width:min(1040px,100%);
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      color: rgba(220,223,230,.72);
+      font-size:13px;
+    }
+    .footerLink{
+      color: rgba(255,255,255,.86);
+      text-decoration:none;
+      border-bottom: 1px dashed rgba(34,211,238,.28);
+      padding-bottom:2px;
+    }
+    .footerLink:hover{border-bottom-color: rgba(34,211,238,.55)}
+
+    .modalOverlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(8px);
+      z-index:9998;
+      padding:16px;
+    }
+    .modal{
+      width:min(820px, 100%);
+      margin:6vh auto 0;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.30));
+      box-shadow: 0 22px 70px rgba(0,0,0,.70);
+      overflow:hidden;
+      position:relative;
+    }
+    .modalHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .modalHeader strong{
+      color: rgba(255,255,255,.92);
+      letter-spacing:.01em;
+    }
+    .modalBody{
+      padding:16px;
+      color: rgba(220,223,230,.82);
+      line-height:1.6;
+      font-size:14px;
+    }
+    .modalBody b{color: rgba(255,255,255,.92)}
+    .modalClose{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.24);
+      color: rgba(255,255,255,.90);
+      border-radius:12px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:800;
+    }
+    .modalClose:hover{
+      border-color: rgba(34,211,238,.35);
+      box-shadow: 0 0 30px rgba(34,211,238,.10);
+    }
+
+    .cookieBanner{
+      display:none;
+      position:fixed;
+      left:16px;
+      right:16px;
+      bottom:16px;
+      z-index:9999;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.42);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.65);
+      overflow:hidden;
+    }
+    .cookieInner{
+      padding:14px 14px 12px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .cookieText{
+      flex: 1 1 360px;
+      min-width: 260px;
+      color: rgba(235,238,245,.90);
+      font-size:13px;
+      line-height:1.45;
+    }
+    .cookieText small{display:block;color: rgba(210,213,220,.86); margin-top:4px}
+    .cookieActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .cookieBtn{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: rgba(255,255,255,.92);
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:850;
+    }
+    .cookieBtnPrimary{
+      background: linear-gradient(180deg, rgba(20,24,33,.92), rgba(10,12,18,.92));
+    }
+    .cookieBtn:hover{
+      border-color: rgba(34,211,238,.35);
+      box-shadow: 0 0 28px rgba(34,211,238,.10);
+    }
+
+    .cookiePrefs{
+      display:none;
+      padding:0 14px 14px;
+      border-top:1px solid rgba(255,255,255,.10);
+      color: rgba(220,223,230,.88);
+      font-size:13px;
+      line-height:1.45;
+    }
+    .cookieRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding-top:12px;
+      flex-wrap:wrap;
+    }
+    .toggle{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+    }
+    .toggle input{
+      width:18px;height:18px;
+      accent-color: var(--neon2);
+      cursor:pointer;
+    }
+    .cookieNote{
+      margin-top:8px;
+      color: rgba(210,213,220,.82);
+      font-size:12px;
+    }
   </style>
 </head>
 
@@ -556,58 +722,270 @@
     </section>
   </main>
 
-  <!-- VAPI Widget -->
-  <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async></script>
+  <!-- ADD-ON: Footer (Impressum-Link) -->
+  <footer class="siteFooter" role="contentinfo">
+    <div class="siteFooterInner">
+      <a class="footerLink" href="#impressum" id="openImpressum">Impressum</a>
+    </div>
+  </footer>
 
-  <vapi-widget
-    public-key="c49395c7-5cc5-4e33-94be-a3c185e29b01"
-    assistant-id="1aae9347-3f9d-4054-a234-66428bf640d9"
-    mode="voice"
-    theme="dark"
-    position="bottom-right"
-    size="compact"
-    radius="large"
-    base-color="#07080A"
-    accent-color="#22D3EE"
-    button-base-color="#0E1014"
-    button-accent-color="#E8E8E8"
-    main-label="Vinano Demo"
-    start-button-text="Start"
-    end-button-text="Beenden"
-    empty-voice-message="Klicken Sie auf „Start“, um die Demo zu beginnen."
-    require-consent="true"
-    terms-content="Dies ist eine öffentliche Demo von Vinano. Keine echte Terminbuchung. Mit Start stimmen Sie zu."
-  ></vapi-widget>
+  <!-- ADD-ON: Impressum Modal -->
+  <div class="modalOverlay" id="impressumOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="impressumTitle">
+      <div class="modalHeader">
+        <strong id="impressumTitle">Impressum</strong>
+        <button class="modalClose" id="closeImpressum" type="button">Zurück</button>
+      </div>
+      <div class="modalBody">
+        <p><b>Vinano UG</b></p>
+        <p>Devin Wittiger</p>
+        <p>Am Götzenberg 5</p>
+        <p>69126 Heidelberg</p>
+        <p style="margin-top:10px">
+          E-Mail: <a class="footerLink" href="mailto:info@vinano.de">info@vinano.de</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD-ON: Cookie Banner (banal) -->
+  <div class="cookieBanner" id="cookieBanner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
+    <div class="cookieInner">
+      <div class="cookieText">
+        <b>Cookies & externe Dienste</b><br/>
+        Wir verwenden essenzielle Speicherung (z. B. zur Consent-Auswahl). Optionale externe Inhalte (z. B. Voice-Demo) werden nur nach Zustimmung geladen.
+        <small>Sie können Ihre Auswahl jederzeit ändern.</small>
+      </div>
+      <div class="cookieActions">
+        <button class="cookieBtn" id="cookieSettings" type="button">Einstellungen</button>
+        <button class="cookieBtn" id="cookieEssential" type="button">Nur essenziell</button>
+        <button class="cookieBtn cookieBtnPrimary" id="cookieAcceptAll" type="button">Alle akzeptieren</button>
+      </div>
+    </div>
+
+    <div class="cookiePrefs" id="cookiePrefs">
+      <div class="cookieRow">
+        <div>
+          <b>Essenziell</b>
+          <div class="cookieNote">Notwendig, um die Seite korrekt zu betreiben (z. B. Speichern Ihrer Consent-Auswahl).</div>
+        </div>
+        <div class="toggle">
+          <input type="checkbox" checked disabled />
+          <span>Immer aktiv</span>
+        </div>
+      </div>
+
+      <div class="cookieRow">
+        <div>
+          <b>Externe Medien (Voice Demo)</b>
+          <div class="cookieNote">Lädt das VAPI Widget (externes Skript). Erst nach Zustimmung.</div>
+        </div>
+        <div class="toggle">
+          <input id="consentExternal" type="checkbox" />
+          <span>Aktivieren</span>
+        </div>
+      </div>
+
+      <div class="cookieRow" style="justify-content:flex-end">
+        <button class="cookieBtn cookieBtnPrimary" id="cookieSave" type="button">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VAPI Widget -->
+  <!-- NOTE: wird DSGVO-gated geladen (siehe Script unten). Original bleibt hier, aber wir machen es inert. -->
+  <script id="vapiWidgetLoader" type="text/plain" data-consent="external">
+    (function(){
+      var s=document.createElement('script');
+      s.src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js";
+      s.async=true;
+      document.head.appendChild(s);
+
+      // Create widget element after script is requested
+      var w=document.createElement('vapi-widget');
+      w.setAttribute('public-key','c49395c7-5cc5-4e33-94be-a3c185e29b01');
+      w.setAttribute('assistant-id','1aae9347-3f9d-4054-a234-66428bf640d9');
+      w.setAttribute('mode','voice');
+      w.setAttribute('theme','dark');
+      w.setAttribute('position','bottom-right');
+      w.setAttribute('size','compact');
+      w.setAttribute('radius','large');
+      w.setAttribute('base-color','#07080A');
+      w.setAttribute('accent-color','#22D3EE');
+      w.setAttribute('button-base-color','#0E1014');
+      w.setAttribute('button-accent-color','#E8E8E8');
+      w.setAttribute('main-label','Vinano Demo');
+      w.setAttribute('start-button-text','Start');
+      w.setAttribute('end-button-text','Beenden');
+      w.setAttribute('empty-voice-message','Klicken Sie auf „Start“, um die Demo zu beginnen.');
+      w.setAttribute('require-consent','true');
+      w.setAttribute('terms-content','Dies ist eine öffentliche Demo von Vinano. Keine echte Terminbuchung. Mit Start stimmen Sie zu.');
+      document.body.appendChild(w);
+    })();
+  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded',()=>{
       const s=document.getElementById('status');
       const a=document.getElementById('afterCall');
-      const w=document.querySelector('vapi-widget');
       const arrow=document.querySelector('.cornerArrow');
 
-      if(!w) return;
+      // ---------- ADD-ON: Impressum toggle ----------
+      const openImp = document.getElementById('openImpressum');
+      const impOverlay = document.getElementById('impressumOverlay');
+      const closeImp = document.getElementById('closeImpressum');
 
-      const showStatus = (msg) => {
-        s.style.display='block';
-        s.textContent=msg;
+      function showImpressum(){
+        impOverlay.style.display='block';
+        impOverlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+      }
+      function hideImpressum(){
+        impOverlay.style.display='none';
+        impOverlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow='';
+      }
+      if(openImp){
+        openImp.addEventListener('click',(e)=>{
+          e.preventDefault();
+          showImpressum();
+          history.pushState({impressum:true}, '', '#impressum');
+        });
+      }
+      if(closeImp) closeImp.addEventListener('click', hideImpressum);
+      if(impOverlay){
+        impOverlay.addEventListener('click',(e)=>{
+          if(e.target === impOverlay) hideImpressum();
+        });
+      }
+      window.addEventListener('popstate',()=>{
+        if(location.hash !== '#impressum') hideImpressum();
+      });
+      if(location.hash === '#impressum') showImpressum();
+
+      // ---------- ADD-ON: Consent / Cookie banner ----------
+      const CONSENT_KEY = 'vinano_consent_v1';
+      const banner = document.getElementById('cookieBanner');
+      const prefs = document.getElementById('cookiePrefs');
+      const btnSettings = document.getElementById('cookieSettings');
+      const btnEssential = document.getElementById('cookieEssential');
+      const btnAcceptAll = document.getElementById('cookieAcceptAll');
+      const btnSave = document.getElementById('cookieSave');
+      const chkExternal = document.getElementById('consentExternal');
+
+      const loadGatedScripts = (consent) => {
+        // only load once
+        if (window.__vinano_external_loaded) return;
+
+        if(consent && consent.external === true){
+          const tpl = document.getElementById('vapiWidgetLoader');
+          if(tpl){
+            try{
+              // execute the text content
+              new Function(tpl.textContent)();
+              window.__vinano_external_loaded = true;
+            }catch(e){}
+          }
+        }
       };
 
-      w.addEventListener('call-start',()=>{
-        a.style.display='none';
-        showStatus('Die Demo läuft. Tipp: Testen Sie auch Outbound, z. B. „Rufen Sie mich als alten Interessenten an.“');
-        if (arrow) arrow.style.display='none';
-      });
+      const getConsent = () => {
+        try{
+          const raw = localStorage.getItem(CONSENT_KEY);
+          return raw ? JSON.parse(raw) : null;
+        }catch(e){
+          return null;
+        }
+      };
 
-      w.addEventListener('call-end',()=>{
-        showStatus('Die Demo wurde beendet. Gerne können Sie jetzt Kontakt aufnehmen oder direkt einen Termin auf vinano.de buchen.');
-        a.style.display='flex';
-        if (arrow) arrow.style.display='';
-      });
+      const setConsent = (obj) => {
+        try{
+          localStorage.setItem(CONSENT_KEY, JSON.stringify(obj));
+        }catch(e){}
+      };
 
-      w.addEventListener('error',()=>{
-        showStatus('Technischer Hinweis: Bitte prüfen Sie Mikrofonzugriff oder Internetverbindung.');
-      });
+      const showBanner = () => { banner.style.display='block'; };
+      const hideBanner = () => { banner.style.display='none'; prefs.style.display='none'; };
+
+      const existing = getConsent();
+      if(!existing){
+        showBanner();
+      }else{
+        loadGatedScripts(existing);
+      }
+
+      if(btnSettings){
+        btnSettings.addEventListener('click',()=>{
+          prefs.style.display = (prefs.style.display === 'block') ? 'none' : 'block';
+        });
+      }
+
+      if(btnEssential){
+        btnEssential.addEventListener('click',()=>{
+          const c = { essential:true, external:false, ts: Date.now() };
+          setConsent(c);
+          hideBanner();
+          // no external load
+        });
+      }
+
+      if(btnAcceptAll){
+        btnAcceptAll.addEventListener('click',()=>{
+          const c = { essential:true, external:true, ts: Date.now() };
+          setConsent(c);
+          hideBanner();
+          loadGatedScripts(c);
+        });
+      }
+
+      if(btnSave){
+        btnSave.addEventListener('click',()=>{
+          const c = { essential:true, external: !!chkExternal.checked, ts: Date.now() };
+          setConsent(c);
+          hideBanner();
+          loadGatedScripts(c);
+        });
+      }
+
+      // ---------- Existing widget lifecycle handlers ----------
+      // Because the widget is loaded conditionally, we attach listeners
+      // after it's present. We'll poll briefly until it exists.
+      const attachWidgetListeners = () => {
+        const w = document.querySelector('vapi-widget');
+        if(!w) return false;
+
+        const showStatus = (msg) => {
+          s.style.display='block';
+          s.textContent=msg;
+        };
+
+        w.addEventListener('call-start',()=>{
+          a.style.display='none';
+          showStatus('Die Demo läuft. Tipp: Testen Sie auch Outbound, z. B. „Rufen Sie mich als alten Interessenten an.“');
+          if (arrow) arrow.style.display='none';
+        });
+
+        w.addEventListener('call-end',()=>{
+          showStatus('Die Demo wurde beendet. Gerne können Sie jetzt Kontakt aufnehmen oder direkt einen Termin auf vinano.de buchen.');
+          a.style.display='flex';
+          if (arrow) arrow.style.display='';
+        });
+
+        w.addEventListener('error',()=>{
+          showStatus('Technischer Hinweis: Bitte prüfen Sie Mikrofonzugriff oder Internetverbindung.');
+        });
+
+        return true;
+      };
+
+      // Try attach immediately, then a few times (in case consent was already given)
+      let tries = 0;
+      const t = setInterval(()=>{
+        tries++;
+        if(attachWidgetListeners() || tries > 30){
+          clearInterval(t);
+        }
+      }, 250);
 
       // Optional: Hide the arrow after a while (less visual noise)
       setTimeout(()=>{ if (arrow) arrow.style.opacity = '0.0'; }, 16000);
@@ -616,3 +994,4 @@
   </script>
 </body>
 </html>
+
