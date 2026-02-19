@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Vinano Demo – KI-Telefonassistent</title>
-  <meta name="description" content="Öffentliche Demo: Testen Sie den Vinano KI-Telefonassistenten – realistische Handwerker-Anruf-Simulation (Inbound & Outbound)." />
+  <meta name="description" content="Öffentliche Demo: Testen Sie den Vinano KI-Telefonassistenten – realistische Anruf-Simulation für Handwerk, Bau, Immobilien und Architektur (Inbound & Outbound)." />
 
   <style>
     :root{
@@ -235,6 +235,19 @@
       text-shadow: 0 0 14px rgba(34,211,238,.16);
     }
 
+    /* ADD-ON (minimal): Highlight-Satz */
+    .valueProp{
+      margin-top:2px;
+      font-size:15px; /* leicht größer */
+      line-height:1.55;
+      color: rgba(235,238,245,.92);
+      text-shadow: 0 0 16px rgba(34,211,238,.16);
+    }
+    .valueProp b{
+      color: rgba(255,255,255,.96);
+      text-shadow: 0 0 18px rgba(34,211,238,.22);
+    }
+
     .grid{
       margin-top:18px;
       display:grid;
@@ -404,6 +417,10 @@
       box-shadow: 0 0 0 0 rgba(34,211,238,.28);
       animation: pulseBadge 1.9s ease-out infinite;
     }
+
+    /* ADD-ON (minimal): Play-Icon entfernen, Kreis bleibt (Layout bleibt stabil) */
+    .hintBadge span{display:none;}
+
     @keyframes pulseBadge{
       0%{box-shadow:0 0 0 0 rgba(34,211,238,.24)}
       70%{box-shadow:0 0 0 14px rgba(34,211,238,0)}
@@ -653,16 +670,20 @@
       <div class="pillRow">
         <div class="pill"><span class="dot"></span> Öffentliche Demo</div>
         <div class="pill">KI-Telefonassistent</div>
-        <div class="pill">Inbound & Outbound</div>
+        <div class="pill">Handwerk · Bau · Immobilien</div>
         <div class="pill">Vinano · Heidelberg</div>
       </div>
 
       <h1 class="headline">Testen Sie unseren KI-Telefonassistenten</h1>
-      <p>
-        Stellen Sie Ihre Frage so, als würden Sie gerade bei einem Handwerksbetrieb anrufen
-        (z. B. Elektriker, Sanitär, Dachdecker).
-        Diese Demo zeigt, wie Anrufannahme, Qualifizierung und Terminlogik automatisiert ablaufen können –
-        und wie man auf Wunsch auch <b>alte Leads automatisch wieder kontaktiert</b> (Outbound).
+
+      <p class="valueProp">
+        Vinano nimmt Anrufe <b>rund um die Uhr</b> an, qualifiziert Anliegen in klaren Fragen und sorgt dafür, dass <b>keine Anfrage</b>, <b>kein Lead</b> und <b>kein Angebot</b> liegen bleibt.
+      </p>
+
+      <p style="margin-top:10px">
+        Stellen Sie Ihre Frage so, als würden Sie gerade bei einem <b>Handwerksbetrieb</b>, einem <b>Bauunternehmen</b>,
+        einer <b>Hausverwaltung / einem Makler</b> oder einem <b>Architekturbüro</b> anrufen.
+        Die Demo simuliert Annahme, Qualifizierung und Termin- oder Projektabstimmung. Outbound (Lead-Reaktivierung) ist ebenfalls möglich.
       </p>
 
       <div class="grid">
@@ -671,15 +692,15 @@
           <ul>
             <li>Starten Sie die Demo über den Button unten rechts („Vinano Demo“).</li>
             <li>Erlauben Sie den Mikrofonzugriff.</li>
-            <li>Sprechen Sie Ihr Anliegen ganz normal ein.</li>
+            <li>Sagen Sie Ihr Anliegen kurz. Danach stellt die Demo Rückfragen.</li>
             <li>Beenden Sie das Gespräch jederzeit über „Beenden“.</li>
           </ul>
 
           <div class="hint">
-            <div class="hintBadge">▶</div>
+            <div class="hintBadge" aria-hidden="true"><span>▶</span></div>
             <div class="hintText">
               <b>Interaktion-Tipp:</b> Testen Sie auch Outbound.
-              <small>Zum Beispiel: „Rufen Sie mich als alten Interessenten an und fragen nach, ob mein Anliegen noch aktuell ist.“</small>
+              <small>Klicken Sie unten rechts auf „Vinano Demo“ und dann auf „Start“. Sagen Sie z. B.: „Rufen Sie mich als alten Interessenten an und fragen nach, ob mein Anliegen noch aktuell ist.“</small>
             </div>
           </div>
 
@@ -697,25 +718,39 @@
           </div>
 
           <p style="margin-top:10px;font-size:13px;color:rgba(210,213,220,.78);position:relative;z-index:1">
-            Hinweis: Dies ist eine Demo. Es werden keine echten Termine oder Aufträge angenommen.
+            Hinweis: Demo-Modus. Keine echten Termine. Keine echten Aufträge. Keine verbindlichen Zusagen.
           </p>
         </div>
 
         <div class="panel">
-          <h2>Beispiel-Anfragen (Inbound)</h2>
+          <h2>Beispiel-Anfragen (Handwerk)</h2>
           <ul>
-            <li>„Ich habe einen Kurzschluss – wäre heute ein Termin möglich?“</li>
-            <li>„Meine Heizung funktioniert nicht – wie schnell könnten Sie kommen?“</li>
-            <li>„Was kostet eine Reparatur ungefähr?“</li>
-            <li>„Arbeiten Sie in meiner Postleitzahl?“</li>
+            <li>„Heizung kaputt – wie schnell geht ein Termin?“</li>
+            <li>„Können Sie in 69126 helfen?“</li>
+          </ul>
+
+          <h2 style="margin-top:16px">Beispiel-Anfragen (Immobilien)</h2>
+          <ul>
+            <li>„Ist das Objekt noch verfügbar? Ich möchte eine Besichtigung.“</li>
+            <li>„Ich möchte verkaufen – wie läuft die Bewertung ab?“</li>
+          </ul>
+
+          <h2 style="margin-top:16px">Beispiel-Anfragen (Bau)</h2>
+          <ul>
+            <li>„Neubau, circa 240 Quadratmeter – wie ist Ihr Ablauf?“</li>
+            <li>„Wir haben eine Ausschreibung – können Sie anbieten?“</li>
+          </ul>
+
+          <h2 style="margin-top:16px">Beispiel-Anfragen (Architektur & Planung)</h2>
+          <ul>
+            <li>„Ich plane einen Anbau – bieten Sie eine Erstberatung an?“</li>
+            <li>„Welche Infos brauchen Sie für eine Machbarkeitsprüfung?“</li>
           </ul>
 
           <h2 style="margin-top:16px">Beispiel-Anfragen (Outbound)</h2>
           <ul>
-            <li>„Rufen Sie mich als alten Lead an, der vor zwei Wochen angefragt hat.“</li>
-            <li>„Fassen Sie bei einem offenen Angebot nach und bieten Sie einen Termin an.“</li>
-            <li>„Rufen Sie wegen einer Wartungserinnerung an.“</li>
-            <li>„Versuchen Sie, einen abgebrochenen Kontakt wieder zu aktivieren.“</li>
+            <li>„Fassen Sie bei einem offenen Angebot nach und fragen Sie nach dem Status.“</li>
+            <li>„Rufen Sie wegen einer Objektanfrage / Besichtigung nach.“</li>
           </ul>
         </div>
       </div>
@@ -792,8 +827,7 @@
     </div>
   </div>
 
-  <!-- VAPI Widget -->
-  <!-- NOTE: wird DSGVO-gated geladen (siehe Script unten). Original bleibt hier, aber wir machen es inert. -->
+  <!-- VAPI Widget (DSGVO gated) -->
   <script id="vapiWidgetLoader" type="text/plain" data-consent="external">
     (function(){
       var s=document.createElement('script');
@@ -801,7 +835,6 @@
       s.async=true;
       document.head.appendChild(s);
 
-      // Create widget element after script is requested
       var w=document.createElement('vapi-widget');
       w.setAttribute('public-key','c49395c7-5cc5-4e33-94be-a3c185e29b01');
       w.setAttribute('assistant-id','1aae9347-3f9d-4054-a234-66428bf640d9');
@@ -819,7 +852,7 @@
       w.setAttribute('end-button-text','Beenden');
       w.setAttribute('empty-voice-message','Klicken Sie auf „Start“, um die Demo zu beginnen.');
       w.setAttribute('require-consent','true');
-      w.setAttribute('terms-content','Dies ist eine öffentliche Demo von Vinano. Keine echte Terminbuchung. Mit Start stimmen Sie zu.');
+      w.setAttribute('terms-content','Dies ist eine öffentliche Demo von Vinano. Keine echte Terminbuchung, keine echten Aufträge. Mit Start stimmen Sie zu.');
       document.body.appendChild(w);
     })();
   </script>
@@ -830,7 +863,7 @@
       const a=document.getElementById('afterCall');
       const arrow=document.querySelector('.cornerArrow');
 
-      // ---------- ADD-ON: Impressum toggle ----------
+      // ---------- Impressum toggle ----------
       const openImp = document.getElementById('openImpressum');
       const impOverlay = document.getElementById('impressumOverlay');
       const closeImp = document.getElementById('closeImpressum');
@@ -863,7 +896,7 @@
       });
       if(location.hash === '#impressum') showImpressum();
 
-      // ---------- ADD-ON: Consent / Cookie banner ----------
+      // ---------- Consent / Cookie banner ----------
       const CONSENT_KEY = 'vinano_consent_v1';
       const banner = document.getElementById('cookieBanner');
       const prefs = document.getElementById('cookiePrefs');
@@ -874,14 +907,12 @@
       const chkExternal = document.getElementById('consentExternal');
 
       const loadGatedScripts = (consent) => {
-        // only load once
         if (window.__vinano_external_loaded) return;
 
         if(consent && consent.external === true){
           const tpl = document.getElementById('vapiWidgetLoader');
           if(tpl){
             try{
-              // execute the text content
               new Function(tpl.textContent)();
               window.__vinano_external_loaded = true;
             }catch(e){}
@@ -925,7 +956,6 @@
           const c = { essential:true, external:false, ts: Date.now() };
           setConsent(c);
           hideBanner();
-          // no external load
         });
       }
 
@@ -947,9 +977,7 @@
         });
       }
 
-      // ---------- Existing widget lifecycle handlers ----------
-      // Because the widget is loaded conditionally, we attach listeners
-      // after it's present. We'll poll briefly until it exists.
+      // ---------- Widget lifecycle handlers ----------
       const attachWidgetListeners = () => {
         const w = document.querySelector('vapi-widget');
         if(!w) return false;
@@ -961,12 +989,12 @@
 
         w.addEventListener('call-start',()=>{
           a.style.display='none';
-          showStatus('Die Demo läuft. Tipp: Testen Sie auch Outbound, z. B. „Rufen Sie mich als alten Interessenten an.“');
+          showStatus('Die Demo läuft. Tipp: Für Outbound klicken Sie unten rechts auf „Vinano Demo“, dann „Start“ – und sagen z. B.: „Rufen Sie mich als alten Interessenten an.“');
           if (arrow) arrow.style.display='none';
         });
 
         w.addEventListener('call-end',()=>{
-          showStatus('Die Demo wurde beendet. Gerne können Sie jetzt Kontakt aufnehmen oder direkt einen Termin auf vinano.de buchen.');
+          showStatus('Die Demo wurde beendet. Wenn Sie das für Ihren Betrieb sehen möchten: Kontakt aufnehmen oder Termin auf vinano.de buchen.');
           a.style.display='flex';
           if (arrow) arrow.style.display='';
         });
@@ -978,7 +1006,6 @@
         return true;
       };
 
-      // Try attach immediately, then a few times (in case consent was already given)
       let tries = 0;
       const t = setInterval(()=>{
         tries++;
@@ -994,4 +1021,3 @@
   </script>
 </body>
 </html>
-
